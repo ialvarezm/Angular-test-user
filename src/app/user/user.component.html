@@ -1,0 +1,22 @@
+<h2>My Users</h2>
+<div>
+  <label>User name:
+    <input [(ngModel)]="user.name" type="text" name="name" #name="ngModel"pattern="[A-Za-z]{32}"/>
+  </label>
+  <label>Age:
+    <input type ="number"[(ngModel)]="user.age" name="age" #age="ngModel" type="number"min="1" max="200"/>
+  </label>
+  <!-- (click) passes input value to add() and then clears the input -->
+  <button (click)="add(user)">
+    Add
+  </button>
+</div>
+<ul class="users">
+  <li *ngFor="let user of users">
+    <a routerLink="/detail/{{user._id}}">
+      <span class="badge">{{user.id}}</span> {{user.name}}
+    </a>
+    <button class="delete" title="delete user"
+    (click)="delete(user._id)">x</button>
+  </li>
+</ul>
