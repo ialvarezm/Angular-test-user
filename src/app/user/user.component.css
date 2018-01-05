@@ -23,9 +23,10 @@
   .users a {
     color: #888;
     text-decoration: none;
-    position: relative;
+    position: absolute;
     display: block;
-    width: 250px;
+    top: -10px;
+    width: 150px;
   }
   
   .users a:hover {
@@ -41,7 +42,7 @@
     line-height: 1em;
     position: relative;
     left: -1px;
-    top: -4px;
+    top: 10px;
     height: 1.8em;
     min-width: 16px;
     text-align: right;
@@ -66,7 +67,7 @@
   button.delete {
     position: relative;
     left: 194px;
-    top: -32px;
+    top: 2px;
     background-color: gray !important;
     color: white;
   }

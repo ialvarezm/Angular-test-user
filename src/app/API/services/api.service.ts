@@ -1,8 +1,9 @@
 /* tslint:disable */
 import { Injectable } from '@angular/core';
 import {
-  HttpClient, HttpRequest, HttpResponse, 
-  HttpHeaders, HttpParams } from '@angular/common/http';
+  HttpClient, HttpRequest, HttpResponse,
+  HttpHeaders, HttpParams
+} from '@angular/common/http';
 import { BaseService } from '../base-service';
 import { ApiConfiguration } from '../api-configuration';
 import { Observable } from 'rxjs/Observable';
@@ -11,17 +12,17 @@ import { filter } from 'rxjs/operators/filter';
 
 import { NewUser } from '../models/new-user';
 import { User } from '../models/user';
-import { catchError, tap } from 'rxjs/operators'; 
+import { catchError, tap } from 'rxjs/operators';
 
 
 @Injectable()
 export class ApiService extends BaseService {
-  constructor(
-    config: ApiConfiguration,
-    http: HttpClient
-  ) {
-    super(config, http);
-  }
+    constructor(
+        config: ApiConfiguration,
+        http: HttpClient
+    ) {
+        super(config, http);
+    }
 
   /**
    * Adds a user
@@ -106,7 +107,7 @@ export class ApiService extends BaseService {
     let __params = this.newParams();
     let __headers = new HttpHeaders();
     let __body: any = null;
-    
+
     let req = new HttpRequest<any>(
       "GET",
       this.rootUrl + `/user/${_id}`,
@@ -147,7 +148,7 @@ export class ApiService extends BaseService {
     let __headers = new HttpHeaders();
     let __body: any = null;
     __body = params.user;
-    
+
     let req = new HttpRequest<any>(
       "PUT",
       this.rootUrl + `/user/${params._id}`,
@@ -187,7 +188,7 @@ export class ApiService extends BaseService {
     let __params = this.newParams();
     let __headers = new HttpHeaders();
     let __body: any = null;
-    
+
     let req = new HttpRequest<any>(
       "DELETE",
       this.rootUrl + `/user/${_id}`,
@@ -215,23 +216,56 @@ export class ApiService extends BaseService {
    */
   deleteUser(_id: string): Observable<string> {
     return this.deleteUserResponse(_id).pipe(
-      map(_r => _r.body)
+        map(_r => _r.body)
     );
-  }}
+  }
+
+  // /**
+  //  * Gets list of users by search term
+  //  */
+  // getUsersSearchResponse(term: string): Observable<HttpResponse<User[]>> {
+  //   let __params = this.newParams();
+  //   let __headers = new HttpHeaders();
+  //   let __body: any = null;
+  //   let req = new HttpRequest<any>(
+  //     "GET",
+  //     this.rootUrl + `/user/search/${term}`,
+  //     __body,
+  //     {
+  //       headers: __headers,
+  //       params: __params,
+  //       responseType: 'json'
+  //     });
+
+  //   return this.http.request<any>(req).pipe(
+  //     filter(_r => _r instanceof HttpResponse),
+  //     map(_r => {
+  //       let _resp = _r as HttpResponse<any>;
+  //       let _body: User[] = null;
+  //       _body = _resp.body as User[]
+  //       return _resp.clone({body: _body}) as HttpResponse<User[]>;
+  //     })
+  //   );
+  // }
 
   /**
    * Search user by name
    * @param term - ID of user to delete
    */
-  deleteUser(_id: string): Observable<string> {
-    return this.deleteUserResponse(_id).pipe(
-      map(_r => _r.body)
-    );
-  }}
+    searchUsers(term: string): Observable<User[]> {
+      let users;
+
+      this.getUsersResponse().pipe(
+        map(_r => users = _r.body)
+      );
+
+      return users;
+    }
+}
 
 export module ApiService {
-  export interface UpdateUserParams {
-    user: NewUser;
-    _id: string;
-  }
+    export interface UpdateUserParams {
+        user: NewUser;
+        _id: string;
+    }
 }

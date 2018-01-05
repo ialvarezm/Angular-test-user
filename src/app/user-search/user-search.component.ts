@@ -5,38 +5,45 @@ import { Subject }    from 'rxjs/Subject';
 import { of }         from 'rxjs/observable/of';
 
 import {
-   debounceTime, distinctUntilChanged, switchMap
- } from 'rxjs/operators';
+    debounceTime, distinctUntilChanged, switchMap
+} from 'rxjs/operators';
 
- import {ApiService} from '../API/services/api.service';
- import {User} from '../API/models/user';
+import {ApiService} from '../API/services/api.service';
+import {User} from '../API/models/user';
 
 @Component({
-  selector: 'app-user-search',
-  templateUrl: './user-search.component.html',
-  styleUrls: [ './user-search.component.css' ]
+    selector: 'app-user-search',
+    templateUrl: './user-search.component.html',
+    styleUrls: [ './user-search.component.css' ]
 })
+
 export class UserSearchComponent implements OnInit {
-  users$: Observable<User[]>;
-  private searchTerms = new Subject<string>();
+    users$: User[];
+    filteredUsers: User[] = [];
 
-  constructor(private userService: ApiService) {}
+    constructor(private userService: ApiService) {}
 
-  // Push a search term into the observable stream.
-  search(term: string): void {
-    this.searchTerms.next(term);
-  }
+    // Push a search term into the observable stream.
+    search(term: string): void {
+        if(term != '') {
+            this.searchUsers(term);
+        } else {
+            this.filteredUsers = [];
+        }
+    }
 
-  ngOnInit(): void {
-    this.users$ = this.searchTerms.pipe(
-      // wait 300ms after each keystroke before considering the term
-      debounceTime(300),
+    ngOnInit(): void {
+        this.getUsers();
+    }
 
-      // ignore new term if same as previous term
-     distinctUntilChanged(),
+    getUsers(): void {
+        this.userService.getUsers()
+            .subscribe(users => this.users$ = users);
+    }
 
-      // switch to new search observable each time the term changes
-      switchMap((term: string) => this.userService.searchUsers(term))
-   );
-  }
+    searchUsers(term: string) {
+        this.filteredUsers = this.users$.filter(user => {
+            return user.name.toLowerCase().includes(term.toLowerCase());
+        });
+    }
 }
