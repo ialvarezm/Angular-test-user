@@ -220,34 +220,6 @@ export class ApiService extends BaseService {
     );
   }
 
-  // /**
-  //  * Gets list of users by search term
-  //  */
-  // getUsersSearchResponse(term: string): Observable<HttpResponse<User[]>> {
-  //   let __params = this.newParams();
-  //   let __headers = new HttpHeaders();
-  //   let __body: any = null;
-  //   let req = new HttpRequest<any>(
-  //     "GET",
-  //     this.rootUrl + `/user/search/${term}`,
-  //     __body,
-  //     {
-  //       headers: __headers,
-  //       params: __params,
-  //       responseType: 'json'
-  //     });
-
-  //   return this.http.request<any>(req).pipe(
-  //     filter(_r => _r instanceof HttpResponse),
-  //     map(_r => {
-  //       let _resp = _r as HttpResponse<any>;
-  //       let _body: User[] = null;
-  //       _body = _resp.body as User[]
-  //       return _resp.clone({body: _body}) as HttpResponse<User[]>;
-  //     })
-  //   );
-  // }
-
   /**
    * Search user by name
    * @param term - ID of user to delete
